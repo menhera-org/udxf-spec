@@ -41,7 +41,7 @@ _By Yuka MORI (https://github.com/metastable-void)_
 - This data model uses a value-based semantics. The same values are to be interpreted the same.
 - Object-Type UUIDs are for identifying classes of objects (i.e. types). These are not for identifying individual objects.
 - For Object-Type UUIDs, the NULL UUID `00000000-0000-0000-0000-000000000000` can be used to represent an unspecified type.
-- One SHOULD use an in-band encoding for identifiers of individual objects.
+- One SHOULD use an in-band encoding for identifiers of individual objects, if identities of individual objects are of concern.
 - What kind of data types and processing are assumed for a BLOB field is to be inferred from the corresponding Dictionary-Key UUID and/or the Object-Type UUID of the owner object.
 
 ### Two interpretations for Lists
