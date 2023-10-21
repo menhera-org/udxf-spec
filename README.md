@@ -42,7 +42,7 @@ _By Yuka MORI (https://github.com/metastable-void)_
 - One SHOULD use an in-band encoding for identifiers of individual objects.
 - What kind of data types and processing are assumed for a field of bytes is to be inferred from the corresponding Dictionary-Key UUID and/or the Object-Type UUID of the owner object.
 
-### Two interpretation for Lists
+### Two interpretations for Lists
 
 There are two possible interpretations for a List defined in this specification.
 One MUST choose and define one for a type of Objects identified by an Object-Type UUID.
