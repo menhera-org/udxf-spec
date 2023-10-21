@@ -55,6 +55,8 @@ A Struct is either an unlabeled Struct or a labeled Struct.
 
 This data model uses a **value-based semantics**. The same values are to be interpreted the same.
 
+For different purposes, you MUST use different UUIDs. Randomly generated v4 UUIDs are considered to be unique.
+
 A Constructor UUID is a "type constructor" as it makes mere data into a value with a particular meaning.
 Constructor UUIDs are for identifying types of values and these are not for identifying individual values.
 If you need to encode identities of individual values, you can as always use an in-band encoding of identifiers (i.e. embedded into the values),
