@@ -17,7 +17,7 @@ _By Yuka MORI (https://github.com/metastable-void)_
 
 - We use UUIDs for identifying types of objects and for identifying keys of dictionaries.
 - We define only one primitive type for this format, i.e. a byte array.
-- Meanings of data are interpreted based on Object-Type UUIDs and Dictionary-Key UUIDs. No particular definition of concrete meanings of these UUIDs is given in this specification.
+- Meanings of data are interpreted based on Object-Type UUIDs and Dictionary-Key UUIDs. No particular definition of concrete meanings of these UUIDs is given in this specification. There is an exception for the NULL UUID.
 
 ## Structure
 
@@ -38,7 +38,9 @@ _By Yuka MORI (https://github.com/metastable-void)_
 
 ## Semantics
 
+- This data model uses a value-based semantics. The same values are to be interpreted the same.
 - Object-Type UUIDs are for identifying classes of objects (i.e. types). These are not for identifying individual objects.
+- For Object-Type UUIDs, the NULL UUID `00000000-0000-0000-0000-000000000000` can be used to represent an unspecified type.
 - One SHOULD use an in-band encoding for identifiers of individual objects.
 - What kind of data types and processing are assumed for a BLOB field is to be inferred from the corresponding Dictionary-Key UUID and/or the Object-Type UUID of the owner object.
 
