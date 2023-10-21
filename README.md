@@ -185,3 +185,123 @@ A more complex example (a List containing unlabeled Structs).
 
 ### JSON embedding
 
+Constructor UUID fields ("c" fields) are omitted for the NULL UUIDs.
+Fields of JSON objects are not ordered and the order is irrelevant.
+White space characters can be inserted as long as they do not change the meanings of JSON values.
+
+```
+<value> = <blob> | <list> | <struct>
+
+<struct> = <unlabeled_struct> | <labeled_struct>
+```
+
+Every UDXF value is represented by a JSON object.
+A Constructor UUID is encoded into the "c" field of the JSON object for the value.
+
+```
+<constructor_uuid> = '"c"' ":" '"' <standard_uuid_in_lowercase> '"'
+```
+
+#### BLOB encoding
+
+```
+<blob_type> = '"t" : "blob"'
+<blob_value> = '"v"' ":" '"' <base64> '"'
+<blob> = "{" <blob_type> [ "," <constructor_uuid> ] "," <blob_value> "}"
+```
+
+#### List encoding
+
+```
+<list_type> = '"t" : "list"'
+<list_value> = '"v"' ":" "[" [ <value> *( "," <value> ) ] "]"
+<list> = "{" <list_type> [ "," <constructor_uuid> ] "," <list_value> "}"
+```
+
+#### Unlabeled Struct encoding
+
+```
+<ustruct_type> = '"t" : "ustruct"'
+<ustruct_value> = '"v"' ":" "[" [ <value> *( "," <value> ) ] "]"
+<unlabeled_struct> = "{" <ustruct_type> [ "," <constructor_uuid> ] "," <ustruct_value> "}"
+```
+
+#### Labeled Struct encoding
+
+Labels of a labeled Struct are encoded into the property names of the "v" JSON object.
+
+```
+<label_uuid> = '"' <standard_uuid_in_lowercase> '"'
+<lstruct_type> = '"t" : "lstruct"'
+<lstruct_value> = '"v"' ":" "{" [ <label_uuid> ":" <value> *( "," <label_uuid> ":" <value> ) ] "}"
+<labeled_struct> = "{" <lstruct_type> [ "," <constructor_uuid> ] "," <lstruct_value> "}"
+```
+
+#### Examples
+
+```
+{
+    "t": "blob"
+    ,"v": "BWSbmY92ig3cVYjmzR2Ij7JwPbXWL/zRn8zo+m7eXR4HbcsM3FjpWwM8a/NI"
+}
+```
+
+```
+{
+    "t": "blob"
+    ,"c": "9eb7a55e-3f49-4719-9db8-7d47d2f9a61a"
+    ,"v": ""
+}
+```
+
+```
+{
+    "t": "lstruct"
+    ,"c": "68362700-8574-44b5-8048-c378e95fe3d9"
+    ,"v": {
+        "5f498a76-cca9-4c50-8eea-b9b9ff1fda3d": {"t":"blob","v":"mkU84gyMHt9xC40pfPOQZYsJDwg5tdHWqw=="}
+        ,"b3ebc11b-b51c-4ced-9498-3c7a8df4ef00": {"t":"blob","v":"LjE8ylc+N1LGzwKpUVjY2QK/9g=="}
+        ,"f06cbebb-e026-4c2b-9f34-15dddc986bea": {"t":"blob","v":"iTs1vvCvccMpSrx6R9HOOh/g266mN5pd+PbN+5QCXQ=="}
+    }
+}
+```
+
+```
+{
+    "t": "list"
+    ,"c": "49058051-8c6e-4a56-afac-3d8c08b7d1bd"
+    ,"v": [
+        {
+            "t": "ustruct"
+            ,"c": "21e3208b-fc4d-4113-8800-ce3a96fe4fff"
+            ,"v": [
+                {"t":"blob","v":"AZlhan5yJsa35b0YCcGFE9u6GGdGFuSN6XGZFYnsuwbWBfXHvXKmr9A="}
+                ,{"t":"blob","v":"S/QqfA=="}
+            ]
+        }
+        ,{
+            "t": "ustruct"
+            ,"c": "21e3208b-fc4d-4113-8800-ce3a96fe4fff"
+            ,"v": [
+                {"t":"blob","v":"YiYhR2aERVcrAiXQ3e65OlcO/v1nA0nvG2NGqvKGqkysHIHC9QaI"}
+                ,{"t":"blob","v":"z7Shrw=="}
+            ]
+        }
+        ,{
+            "t": "ustruct"
+            ,"c": "21e3208b-fc4d-4113-8800-ce3a96fe4fff"
+            ,"v": [
+                {"t":"blob","v":"AZlhan5yJsa35b0YCcGFE9u6GGdGFuSN6XGZFYnsuwbWBfXHvXKmr9A="}
+                ,{"t":"blob","v":"S/QqfA=="}
+            ]
+        }
+        ,{
+            "t": "ustruct"
+            ,"c": "21e3208b-fc4d-4113-8800-ce3a96fe4fff"
+            ,"v": [
+                {"t":"blob","v":"mkU84gyMHt9xC40pfPOQZYsJDwg5tdHWqw=="}
+            ]
+        }
+    ]
+}
+```
