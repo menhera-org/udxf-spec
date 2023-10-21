@@ -83,6 +83,8 @@ where x's are hexadecimal digits.
 ```
 
 ASCII white-space characters are allowed and ignored between tokens composing a Dictionary or a List.
+Note that a preceding comma is allowed for a Dictionary or a List. A succeeding comma is also allowed.
+An empty Dictionary or List MUST NOT contain any comma.
 
 ```
 <dictionary> = "{" [ [ "," ] <uuid> ":" <value> *( "," <uuid> ":" <value> ) [ "," ] ] "}"
