@@ -21,11 +21,11 @@ _By Yuka MORI (https://github.com/metastable-void)_
 
 ## Structure
 
-- A UDXF value is either an array of bytes (octets) or an UDXF object.
+- A UDXF value is either a BLOB (an array of bytes, or octets) or an UDXF object.
 - An UDXF object has an Object-Type UUID for identifying the type of that object.
 
 ```
-<value> = <byte_array> | <object>
+<value> = <blob> | <object>
 
 <object> = <object_type_uuid> <object_body>
 
@@ -40,7 +40,7 @@ _By Yuka MORI (https://github.com/metastable-void)_
 
 - Object-Type UUIDs are for identifying classes of objects (i.e. types). These are not for identifying individual objects.
 - One SHOULD use an in-band encoding for identifiers of individual objects.
-- What kind of data types and processing are assumed for a field of bytes is to be inferred from the corresponding Dictionary-Key UUID and/or the Object-Type UUID of the owner object.
+- What kind of data types and processing are assumed for a BLOB field is to be inferred from the corresponding Dictionary-Key UUID and/or the Object-Type UUID of the owner object.
 
 ### Two interpretations for Lists
 
@@ -50,7 +50,7 @@ One MUST choose and define one for a type of Objects identified by an Object-Typ
 #### The array interpretation
 
 The List is interpreted as an array of a particular data type.
-This specification does not forbid one from including both Objects and Bytes in one such array as long as a uniform semantics is defined for that Object type.
+This specification does not forbid one from including both Objects and BLOBs in one such array as long as a uniform semantics is defined for that Object type.
 
 #### The enum interpretation
 
@@ -64,6 +64,7 @@ The canonical serialization format is the binary serialization format defined be
 ### Text serialization format (UDXF-Text)
 
 - UUIDs in UDXF-Text format are encoded in hexadecimal 8-4-4-4-12 format with one prepended less-than "<" symbol and one appended greater-than ">" symbol.
+- **Hexadecimal notation in this format MUST use lowercase digits.**
 
 ```
 <uuid> = "<" 8<hex_digit> "-" 4<hex_digit> "-" 4<hex_digit> "-" 4<hex_digit> "-" 12<hex_digit> ">"
@@ -71,20 +72,28 @@ The canonical serialization format is the binary serialization format defined be
 
 where x's are hexadecimal digits.
 
-- Arrays of bytes in UDXF-Text format are encoded in the standard Base64 with two ASCII double quotation marks '"', one prepended and one appended.
-- ASCII white-space characters (including newlines) inside a Base64-encoded string are ignored.
+- BLOBs in UDXF-Text format are encoded in the standard Base64 with two ASCII double quotation marks '"', one prepended and one appended.
+- ASCII white-space characters (including newlines) inside a Base64-encoded BLOB are ignored.
+
+```
+<blob> = '"' <base64> '"'
+```
+
+A Value is either a byte array or an Object.
 
 ```
 <value> = <bytes> | <object>
 ```
 
+An Object is composed of an Object-Type UUID and an Object body (a List or a Dictionary).
+
 ```
-<bytes> = '"' <base64> '"'
+<object> = <uuid> ( <list> | <dictionary> )
 ```
 
 ASCII white-space characters are allowed and ignored between tokens composing a Dictionary or a List.
-Note that a preceding comma is allowed for a Dictionary or a List. A succeeding comma is also allowed.
-An empty Dictionary or List MUST NOT contain any comma.
+**Note that a preceding comma is allowed for a Dictionary or a List.** A succeeding comma is also allowed.
+**An empty Dictionary or List MUST NOT contain any comma.**
 
 ```
 <dictionary> = "{" [ [ "," ] <uuid> ":" <value> *( "," <uuid> ":" <value> ) [ "," ] ] "}"
@@ -92,6 +101,41 @@ An empty Dictionary or List MUST NOT contain any comma.
 
 ```
 <list> = "[" [ [ "," ] <value> *( "," <value> ) [ "," ] ] "]"
+```
+
+#### Examples
+
+A BLOB is itself a valid UDXF expression.
+
+```
+"BWSbmY92ig3cVYjmzR2Ij7JwPbXWL/zRn8zo+m7eXR4HbcsM3FjpWwM8a/NI"
+```
+
+Empty BLOBs are allowed.
+
+```
+""
+```
+
+A simple Object which is a Dictionary.
+
+```
+<68362700-8574-44b5-8048-c378e95fe3d9> {
+    ,<5f498a76-cca9-4c50-8eea-b9b9ff1fda3d>: "mkU84gyMHt9xC40pfPOQZYsJDwg5tdHWqw=="
+    ,<b3ebc11b-b51c-4ced-9498-3c7a8df4ef00>: "LjE8ylc+N1LGzwKpUVjY2QK/9g=="
+    ,<f06cbebb-e026-4c2b-9f34-15dddc986bea>: "iTs1vvCvccMpSrx6R9HOOh/g266mN5pd+PbN+5QCXQ=="
+}
+```
+
+A more complex example.
+
+```
+<49058051-8c6e-4a56-afac-3d8c08b7d1bd> [
+    ,<21e3208b-fc4d-4113-8800-ce3a96fe4fff> [ ,"AZlhan5yJsa35b0YCcGFE9u6GGdGFuSN6XGZFYnsuwbWBfXHvXKmr9A=" ,"S/QqfA==" ]
+    ,<21e3208b-fc4d-4113-8800-ce3a96fe4fff> [ ,"YiYhR2aERVcrAiXQ3e65OlcO/v1nA0nvG2NGqvKGqkysHIHC9QaI" ,"z7Shrw==" ]
+    ,<21e3208b-fc4d-4113-8800-ce3a96fe4fff> [ ,"AZlhan5yJsa35b0YCcGFE9u6GGdGFuSN6XGZFYnsuwbWBfXHvXKmr9A=" ,"S/QqfA==" ]
+    ,<21e3208b-fc4d-4113-8800-ce3a96fe4fff> [ ,"RiguPTgbm4sRgUnvaIcux/IyzSg1Nsh8GVwh+JlxO2D4PEcOU8bNgTPP" ]
+]
 ```
 
 ### Binary serialization format (UDXF-Binary)
