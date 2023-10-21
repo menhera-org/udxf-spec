@@ -1,2 +1,3 @@
 # udxf-spec
-UUID Data Exchange Format (UXDF) specifications
+UUID Data Exchange Format (UDXF) specifications
+
