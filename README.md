@@ -25,15 +25,15 @@ _By Yuka MORI (https://github.com/metastable-void)_
 - An UDXF object has an Object-Type UUID for identifying the type of that object.
 
 ```
-<value> := <byte_array> | <object>
+<value> = <byte_array> | <object>
 
-<object> := <object_type_uuid> <object_body>
+<object> = <object_type_uuid> <object_body>
 
-<object_body> := <list> | <dictionary>
+<object_body> = <list> | <dictionary>
 
-<list> := "[" <value> * "]"
+<list> = "[" * <value> "]"
 
-<dictionary> := "{" ( <dictionary_key_uuid> ":" <value> ) * "}"
+<dictionary> = "{" * ( <dictionary_key_uuid> ":" <value> ) "}"
 ```
 
 ## Semantics
@@ -66,7 +66,7 @@ The canonical serialization format is the binary serialization format defined be
 - UUIDs in UDXF-Text format are encoded in hexadecimal 8-4-4-4-12 format with one prepended less-than "<" symbol and one appended greater-than ">" symbol.
 
 ```
-<uuid> := "<" xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx ">"
+<uuid> = "<" 8<hex_digit> "-" 4<hex_digit> "-" 4<hex_digit> "-" 4<hex_digit> "-" 12<hex_digit> ">"
 ```
 
 where x's are hexadecimal digits.
