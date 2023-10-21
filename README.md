@@ -71,6 +71,27 @@ The canonical serialization format is the binary serialization format defined be
 
 where x's are hexadecimal digits.
 
+- Arrays of bytes in UDXF-Text format are encoded in the standard Base64 with two ASCII double quotation marks '"', one prepended and one appended.
+- ASCII white-space characters (including newlines) inside a Base64-encoded string are ignored.
+
+```
+<value> = <bytes> | <object>
+```
+
+```
+<bytes> = '"' <base64> '"'
+```
+
+ASCII white-space characters are allowed and ignored between tokens composing a Dictionary or a List.
+
+```
+<dictionary> = "{" [ [ "," ] <uuid> ":" <value> *( "," <uuid> ":" <value> ) [ "," ] ] "}"
+```
+
+```
+<list> = "[" [ [ "," ] <value> *( "," <value> ) [ "," ] ] "]"
+```
+
 ### Binary serialization format (UDXF-Binary)
 
 - This format is based on an array of bytes, and thus it is a byte stream format. (i.e. we do not define any bit order, for example.)
