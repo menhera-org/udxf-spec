@@ -156,7 +156,7 @@ Empty BLOBs are allowed.
 <9eb7a55e-3f49-4719-9db8-7d47d2f9a61a> ""
 ```
 
-A simple Object which is a Dictionary.
+A simple labeled Struct.
 
 ```
 <68362700-8574-44b5-8048-c378e95fe3d9> {
@@ -166,7 +166,7 @@ A simple Object which is a Dictionary.
 }
 ```
 
-A more complex example.
+A more complex example (a List containing unlabeled Structs).
 
 ```
 <49058051-8c6e-4a56-afac-3d8c08b7d1bd> [
